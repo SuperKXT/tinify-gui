@@ -32,7 +32,7 @@
 		"strictPropertyInitialization": true,
 		"baseUrl": ".",
 		"paths": {
-			"~/types/*": [ "src/types/*" ]
+			"~/types/*": [ "src/types/*" ],
 		}
 	},
 	"include": [ "src/**/*" ],
