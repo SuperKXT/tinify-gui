@@ -26,6 +26,7 @@ const App = () => {
 		<>
 			<h1>💖 Hello World!</h1>
 			<p>Welcome to your Electron application</p>
+			<button onClick={() => window.electron.closeApplication()}>Close</button>
 		</>
 	);
 

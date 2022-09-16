@@ -7,12 +7,14 @@ import {
 	screen,
 } from 'electron';
 
+import { configStoreSchema, ConfigStore } from './schemas/ipc';
+
+import { Ipc } from './types/ipc';
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
 	app.quit();
 }
-
-let mainWindow;
 
 const createWindow = () => {
 
@@ -21,7 +23,7 @@ const createWindow = () => {
 	const width = isBiggerScreen ? 1024 : 800;
 	const height = isBiggerScreen ? 600 : 480;
 
-	mainWindow = new BrowserWindow({
+	const mainWindow = new BrowserWindow({
 		width,
 		height,
 		resizable: false,
@@ -33,8 +35,7 @@ const createWindow = () => {
 		webPreferences: {
 			nodeIntegration: false,
 			contextIsolation: true,
-			// // enableRemoteModule: true,
-			// // preload: app.isPackaged ? MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY : path.join(app.getAppPath(), 'src', 'preload.ts'),
+			preload: app.isPackaged ? MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY : path.join(app.getAppPath(), 'src', 'preload.js'),
 		},
 	});
 
@@ -72,34 +73,24 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-// const configStorePath = path.join(app.getPath('userData'), 'config.json');
+const configStorePath = path.join(app.getPath('userData'), 'config.json');
 
-// const getConfigStore = () => new Promise(resolve => {
-// 	try {
-// 		const file = fs.readFileSync(configStorePath, 'utf-8');
-// 		resolve(file);
-// 	}
-// 	catch (error) {
-// 		resolve('{}');
-// 	}
-// });
+const getConfigStore: Ipc['getConfigStore'] = async () => {
+	const file = await fs.readFile.__promisify__(configStorePath, 'utf-8');
+	const json = JSON.parse(file);
+	const configStore = configStoreSchema.parse(json);
+	return configStore;
+};
 
-// const changeConfigStore = (newConfigStore: any) => new Promise((resolve, reject) => {
+const changeConfigStore: Ipc['changeConfigStore'] = (newConfigStore: ConfigStore) => {
+	return fs.writeFile.__promisify__(
+		configStorePath,
+		JSON.stringify(newConfigStore),
+		'utf-8'
+	);
+};
 
-// 	fs.writeFile(configStorePath, JSON.stringify(newConfigStore), 'utf-8', error => {
-
-// 		if (!error) {
-// 			resolve(undefined);
-// 		}
-// 		else {
-// 			reject(error);
-// 		}
-
-// 	});
-
-// });
-
-// ipcMain.handle('getIsPackaged', () => new Promise(resolve => resolve(app.isPackaged)));
-// ipcMain.handle('getConfigStore', () => getConfigStore());
-// ipcMain.handle('changeConfigStore', (_event, newConfig) => changeConfigStore(newConfig));
-// ipcMain.on('closeApplication', () => app.exit());
+ipcMain.handle('getIsPackaged', () => new Promise(resolve => resolve(app.isPackaged)));
+ipcMain.handle('getConfigStore', () => getConfigStore());
+ipcMain.handle('changeConfigStore', (_event, newConfig) => changeConfigStore(newConfig));
+ipcMain.on('closeApplication', () => app.exit());
