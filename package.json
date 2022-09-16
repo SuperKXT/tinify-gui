@@ -3,7 +3,7 @@
 	"productName": "tinify-gui",
 	"version": "0.0.1",
 	"description": "GUI for Tinify API written in Typescript, React, and Electron",
-	"main": "dist/index.js",
+	"main": ".webpack/main",
 	"scripts": {
 		"start": "tsc && electron-forge start",
 		"package": "electron-forge package",
@@ -18,7 +18,7 @@
 	"license": "MIT",
 	"config": {
 		"forge": {
-			"packagerConfig": { },
+			"packagerConfig": {},
 			"makers": [
 				{
 					"name": "@electron-forge/maker-squirrel",
@@ -34,12 +34,30 @@
 				},
 				{
 					"name": "@electron-forge/maker-deb",
-					"config": { }
+					"config": {}
 				},
 				{
 					"name": "@electron-forge/maker-rpm",
-					"config": { }
+					"config": {}
 				}
+			],
+			"plugins": [
+				[
+					"@electron-forge/plugin-webpack",
+					{
+						"mainConfig": "./webpack.main.config.js",
+						"renderer": {
+							"config": "./webpack.renderer.config.js",
+							"entryPoints": [
+								{
+									"html": "./src/index.html",
+									"js": "./src/renderer.ts",
+									"name": "main_window"
+								}
+							]
+						}
+					}
+				]
 			]
 		}
 	},
@@ -49,6 +67,7 @@
 		"@electron-forge/maker-rpm": "^6.0.0-beta.66",
 		"@electron-forge/maker-squirrel": "^6.0.0-beta.66",
 		"@electron-forge/maker-zip": "^6.0.0-beta.66",
+		"@electron-forge/plugin-webpack": "^6.0.0-beta.66",
 		"@svgr/cli": "^6.3.1",
 		"@svgr/core": "^6.3.1",
 		"@types/eslint": "^8.4.6",
@@ -58,16 +77,22 @@
 		"@types/react-dom": "^18.0.6",
 		"@typescript-eslint/eslint-plugin": "^5.0.0",
 		"@typescript-eslint/parser": "^5.0.0",
+		"@vercel/webpack-asset-relocator-loader": "^1.7.3",
+		"css-loader": "^6.7.1",
 		"electron": "20.1.4",
 		"eslint": "^8.23.1",
 		"eslint-plugin-import": "^2.25.0",
 		"eslint-plugin-react": "^7.31.8",
+		"fork-ts-checker-webpack-plugin": "^7.2.13",
 		"jest": "^29.0.3",
 		"msw": "^0.47.3",
+		"node-loader": "^2.0.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"renamer": "^4.0.0",
 		"rimraf": "^3.0.2",
+		"style-loader": "^3.3.1",
+		"ts-loader": "^9.3.1",
 		"typescript": "~4.5.4"
 	},
 	"dependencies": {
