@@ -9,12 +9,16 @@
 		"package": "electron-forge package",
 		"make": "electron-forge make",
 		"publish": "electron-forge publish",
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"svgr": "yarn svgr:remove-icons && yarn svgr:generate-icons && yarn svgr:rename-index",
+		"svgr:generate-icons": "svgr --config-file ./.svgr/svgr.config.js ./src/media/icons/",
+		"svgr:remove-icons": "rimraf ./src/components/branding/icons",
+		"svgr:rename-index": "find ./src/components/branding/icons | renamer --find index.icon.tsx --replace index.tsx"
 	},
 	"license": "MIT",
 	"config": {
 		"forge": {
-			"packagerConfig": {},
+			"packagerConfig": { },
 			"makers": [
 				{
 					"name": "@electron-forge/maker-squirrel",
@@ -30,11 +34,11 @@
 				},
 				{
 					"name": "@electron-forge/maker-deb",
-					"config": {}
+					"config": { }
 				},
 				{
 					"name": "@electron-forge/maker-rpm",
-					"config": {}
+					"config": { }
 				}
 			]
 		}
