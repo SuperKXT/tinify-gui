@@ -9,5 +9,3 @@ contextBridge.exposeInMainWorld(
 		closeApplication: () => ipcRenderer.send('closeApplication'),
 	}
 );
-
-export { };

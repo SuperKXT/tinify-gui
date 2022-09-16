@@ -1,6 +1,5 @@
 {
 	"compilerOptions": {
-		"baseUrl": ".",
 		"outDir": "dist",
 		"target": "esnext",
 		"lib": [
@@ -31,8 +30,9 @@
 		"strictNullChecks": true,
 		"strictFunctionTypes": true,
 		"strictPropertyInitialization": true,
+		"baseUrl": ".",
 		"paths": {
-			"*": [ "node_modules/*" ]
+			"~/types/*": [ "src/types/*" ]
 		}
 	},
 	"include": [ "src/**/*" ],

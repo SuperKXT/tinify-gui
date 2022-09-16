@@ -28,13 +28,13 @@ const createWindow = () => {
 		backgroundColor: '#F4F4FE',
 		autoHideMenuBar: true,
 		icon: path.join(app.getAppPath(), 'src', 'images', 'favicon.png'),
-		// frame: false,
+		// // frame: false,
 		title: 'Fabric Processing Monitoring System',
 		webPreferences: {
 			nodeIntegration: false,
 			contextIsolation: true,
-			// enableRemoteModule: true,
-			// preload: app.isPackaged ? MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY : path.join(app.getAppPath(), 'src', 'preload.ts'),
+			// // enableRemoteModule: true,
+			// // preload: app.isPackaged ? MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY : path.join(app.getAppPath(), 'src', 'preload.ts'),
 		},
 	});
 

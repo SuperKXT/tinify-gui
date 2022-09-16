@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [master]
+    branches: [main]
     tags:
       - 'v*'
 
@@ -11,14 +11,13 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Check or Install Node.js 14.x
+      - name: Check or Install Node.js 16.x
         uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
+          node-version: '16.x'
           cache: 'npm'
 
       - name: Install npm dependencies
@@ -45,6 +44,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./out/make/deb/armv7l/gulahmedelectron_1.0.0_armhf.deb
-          asset_name: gulahmedelectron_1.0.0_armhf.deb
+          asset_path: ./out/make/deb/armv7l/tinify-gui_1.0.0_armhf.deb
+          asset_name: tinify-gui_1.0.0_armhf.deb
           asset_content_type: application/deb
