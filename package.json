@@ -18,7 +18,7 @@
 	"license": "MIT",
 	"config": {
 		"forge": {
-			"packagerConfig": { },
+			"packagerConfig": {},
 			"makers": [
 				{
 					"name": "@electron-forge/maker-squirrel",
@@ -34,11 +34,11 @@
 				},
 				{
 					"name": "@electron-forge/maker-deb",
-					"config": { }
+					"config": {}
 				},
 				{
 					"name": "@electron-forge/maker-rpm",
-					"config": { }
+					"config": {}
 				}
 			],
 			"plugins": [
@@ -98,7 +98,7 @@
 		"style-loader": "^3.3.1",
 		"svg-url-loader": "^8.0.0",
 		"ts-loader": "^9.3.1",
-		"typescript": "~4.5.4"
+		"typescript": "~4.8.3"
 	},
 	"dependencies": {
 		"electron-squirrel-startup": "^1.0.0"
