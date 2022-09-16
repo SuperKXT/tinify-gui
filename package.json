@@ -18,7 +18,7 @@
 	"license": "MIT",
 	"config": {
 		"forge": {
-			"packagerConfig": {},
+			"packagerConfig": { },
 			"makers": [
 				{
 					"name": "@electron-forge/maker-squirrel",
@@ -34,11 +34,11 @@
 				},
 				{
 					"name": "@electron-forge/maker-deb",
-					"config": {}
+					"config": { }
 				},
 				{
 					"name": "@electron-forge/maker-rpm",
-					"config": {}
+					"config": { }
 				}
 			],
 			"plugins": [
@@ -51,7 +51,7 @@
 							"entryPoints": [
 								{
 									"html": "./src/index.html",
-									"js": "./src/renderer.ts",
+									"js": "./src/renderer.tsx",
 									"name": "main_window"
 								}
 							]
@@ -72,6 +72,7 @@
 		"@electron-forge/plugin-webpack": "^6.0.0-beta.66",
 		"@svgr/cli": "^6.3.1",
 		"@svgr/core": "^6.3.1",
+		"@svgr/webpack": "^6.3.1",
 		"@types/eslint": "^8.4.6",
 		"@types/jest": "^29.0.3",
 		"@types/node": "^18.7.18",
@@ -95,6 +96,7 @@
 		"renamer": "^4.0.0",
 		"rimraf": "^3.0.2",
 		"style-loader": "^3.3.1",
+		"svg-url-loader": "^8.0.0",
 		"ts-loader": "^9.3.1",
 		"typescript": "~4.5.4"
 	},

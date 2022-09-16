@@ -1,3 +1,13 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+const { ipcRenderer, contextBridge } = require('electron');
+
+contextBridge.exposeInMainWorld(
+	'electron',
+	{
+		getIsPackaged: () => ipcRenderer.invoke('getIsPackaged'),
+		getConfigStore: () => ipcRenderer.invoke('getConfigStore'),
+		changeConfigStore: (newConfigStore: any) => ipcRenderer.invoke('changeConfigStore', newConfigStore),
+		closeApplication: () => ipcRenderer.send('closeApplication'),
+	}
+);
+
 export { };
