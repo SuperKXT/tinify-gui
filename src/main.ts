@@ -7,9 +7,15 @@ import {
 	screen,
 } from 'electron';
 
-import { configStoreSchema, ConfigStore } from './schemas/ipc';
+import { configStoreSchema, ConfigStore } from './schemas/config';
 
 import { Ipc } from './types/ipc';
+import util from 'util';
+
+const stat = util.promisify(fs.stat);
+const mkdir = util.promisify(fs.mkdir);
+const readFile = util.promisify(fs.readFile);
+const writeFile = util.promisify(fs.writeFile);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -73,24 +79,28 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-const configStorePath = path.join(app.getPath('userData'), 'config.json');
+const configFolder = app.getPath('userData');
+const configStorePath = path.join(
+	configFolder,
+	'config.json'
+);
 
 const getConfigStore: Ipc['getConfigStore'] = async () => {
-	const file = await fs.readFile.__promisify__(configStorePath, 'utf-8');
+	const file = await readFile(configStorePath, 'utf-8');
 	const json = JSON.parse(file);
 	const configStore = configStoreSchema.parse(json);
 	return configStore;
 };
 
-const changeConfigStore: Ipc['changeConfigStore'] = (newConfigStore: ConfigStore) => {
-	return fs.writeFile.__promisify__(
+const changeConfigStore: Ipc['changeConfigStore'] = async (newConfigStore: ConfigStore) => {
+	return writeFile(
 		configStorePath,
 		JSON.stringify(newConfigStore),
 		'utf-8'
 	);
 };
 
-ipcMain.handle('getIsPackaged', () => new Promise(resolve => resolve(app.isPackaged)));
+ipcMain.handle('getIsPackaged', () => app.isPackaged);
 ipcMain.handle('getConfigStore', () => getConfigStore());
 ipcMain.handle('changeConfigStore', (_event, newConfig) => changeConfigStore(newConfig));
 ipcMain.on('closeApplication', () => app.exit());

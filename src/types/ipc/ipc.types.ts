@@ -1,4 +1,4 @@
-import { ConfigStore } from '../../schemas/ipc';
+import { ConfigStore } from '../../schemas/config';
 
 export interface Ipc {
 	getIsPackaged: () => Promise<boolean>,
